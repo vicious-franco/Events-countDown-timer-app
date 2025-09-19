@@ -3,25 +3,20 @@ import { MyContext } from "../context/MyContext";
 import { eventTypes } from "../assets/data";
 
 const CreateEvent = () => {
-  const {
-    setEvents,
-    newEvent,
-    setNewEvent,
-
-    setShowCreateEvent,
-  } = useContext(MyContext);
+  const { setEvents, newEvent, setNewEvent, darkMode, setShowCreateEvent } =
+    useContext(MyContext);
 
   const addEvents = (e) => {
     e.preventDefault();
     setEvents((prev) => {
-      return [
+      const addEvent = [
         ...prev,
         {
           id: Date.now(),
-          name: newEvent.name,
-          type: newEvent.type,
-          desc: newEvent.desc,
-          date_time: new Date(newEvent.date_time).getTime(),
+          name: newEvent.name || null,
+          type: newEvent.type || null,
+          desc: newEvent.desc || null,
+          date_time: new Date(newEvent.date_time || 0).getTime(),
           counts: {
             days: 0,
             hours: 0,
@@ -30,7 +25,9 @@ const CreateEvent = () => {
           },
         },
       ];
+      return addEvent.sort((a, b) => a.date_time - b.date_time);
     });
+
     e.target.reset();
   };
   const handleNewChange = (e) => {
@@ -44,7 +41,9 @@ const CreateEvent = () => {
   return (
     <form
       onSubmit={addEvents}
-      className="bg-white  mt-8 p-8 rounded-xl capitalize flex flex-col gap-6"
+      className={`bg-white ${
+        darkMode ? "dark:bg-[#1f2937] dark:text-gray-300" : ""
+      }  mt-8 p-8 rounded-xl capitalize flex flex-col gap-6`}
     >
       <h1 className="font-bold text-xl">Add new event</h1>
       <div className="flex  flex-col justify-start">
@@ -54,10 +53,15 @@ const CreateEvent = () => {
         <input
           name="name"
           onChange={handleNewChange}
+          required={true}
           type="text"
           id="title"
-          placeholder={newEvent.name ?? "Enter Event Title "}
-          className="px-4 bg-gray-100 border border-gray-300 py-1 mt-2 rounded-lg"
+          placeholder={"Enter Event Title "}
+          className={`px-4 bg-gray-100 border border-gray-300 py-1 mt-2 rounded-lg ${
+            darkMode
+              ? "dark:bg-[#374151]  dark:border-gray-600 dark:outline-none"
+              : ""
+          }`}
         />
       </div>
       <div className="flex flex-col justify-start">
@@ -67,8 +71,13 @@ const CreateEvent = () => {
         <select
           onChange={handleNewChange}
           name="type"
+          required={true}
           id="event"
-          className="px-4 bg-gray-100 border  border-gray-300 py-1.5 mt-2 rounded-lg"
+          className={`px-4 bg-gray-100 border border-gray-300 py-1 mt-2 rounded-lg ${
+            darkMode
+              ? "dark:bg-[#374151] dark:border-gray-600 dark:outline-none"
+              : ""
+          }`}
         >
           <option
             defaultChecked={true}
@@ -93,9 +102,14 @@ const CreateEvent = () => {
         <textarea
           onChange={handleNewChange}
           name="desc"
-          placeholder={newEvent.desc ?? "Enter Event Description"}
+          required={true}
+          placeholder={"Enter Event Description"}
           id="Description"
-          className="px-4 bg-gray-100 border  border-gray-300 py-1.5 mt-2 rounded-lg"
+          className={`px-4 bg-gray-100 border border-gray-300 py-1 mt-2 rounded-lg ${
+            darkMode
+              ? "dark:bg-[#374151] dark:border-gray-600 dark:outline-none"
+              : ""
+          }`}
         ></textarea>
       </div>
       <div className="flex flex-col justify-start">
@@ -104,8 +118,13 @@ const CreateEvent = () => {
         </label>
         <input
           onChange={handleNewChange}
+          required={true}
           name="date_time"
-          className="px-4 bg-gray-100 border  border-gray-300 py-1.5 mt-2 rounded-lg"
+          className={`px-4 bg-gray-100 border border-gray-300 py-1 mt-2 rounded-lg ${
+            darkMode
+              ? "dark:bg-[#374151] dark:border-gray-600 dark:outline-none"
+              : ""
+          }`}
           type="datetime-local"
           id="datetime"
         />
@@ -115,7 +134,9 @@ const CreateEvent = () => {
           Add Event
         </button>
         <button
-          className="bg-gray-200 hover:bg-gray-300 duration-300 cursor-pointer rounded-md px-3 py-1.5 "
+          className={`bg-gray-200  duration-300 cursor-pointer rounded-md px-3 py-1.5 ${
+            darkMode ? "dark:bg-[#374151] " : "hover:bg-gray-300"
+          }`}
           onClick={() => setShowCreateEvent(false)}
         >
           Cancel

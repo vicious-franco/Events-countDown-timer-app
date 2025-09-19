@@ -4,16 +4,28 @@ import RenderEvent from "./component/RenderEvent";
 import Navigations from "./component/Navigations";
 import { MyContext } from "./context/MyContext";
 import { eventTypes } from "./assets/data";
+import UpdateEvent from "./component/UpdateEvent";
 
 const App = () => {
-  const { events, showCreateEvent, setShowCreateEvent } = useContext(MyContext);
+  const {
+    events,
+    showCreateEvent,
+    showUpdateEvent,
+
+    setShowCreateEvent,
+    darkMode,
+  } = useContext(MyContext);
   return (
-    <section className="p-4 md:p-8  lg:py-10 lg:px-26">
+    <section
+      className={` min-h-screen  bg-[#ebf2ff] ${
+        darkMode ? "dark:bg-[#111827]" : ""
+      } p-4 md:p-8  lg:py-10 lg:px-26 `}
+    >
       <Navigations setShowCreateEvent={setShowCreateEvent} />
       {showCreateEvent && <CreateEvent />}
       {events?.map(({ name, id, counts, type, desc, date_time }, index) => {
         const emoji = eventTypes.find((item) => item.label === type);
-        const realEmoji = emoji.emoji;
+        const realEmoji = emoji?.emoji;
         return (
           <RenderEvent
             key={index + 1}
@@ -27,6 +39,7 @@ const App = () => {
           />
         );
       })}
+      {showUpdateEvent && <UpdateEvent />}
     </section>
   );
 };

@@ -3,12 +3,32 @@ import { createContext, useEffect, useState } from "react";
 export const MyContext = createContext();
 
 export const ContextProvider = ({ children }) => {
+  // toogling themes
+  const [darkMode, setDarkMode] = useState(false);
+
+  // toogling the update component
+  const [showUpdateEvent, setShowUpdateEvent] = useState(false);
+
+  // updating the event
+  const [UpdateEvent, setUpdateEvent] = useState({});
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   // initial state to load and render events is available, if not available use new one
   const [events, setEvents] = useState(() => {
     const storedEvents = JSON.parse(localStorage.getItem("events_stored"));
 
     if (storedEvents !== null) {
-      return storedEvents;
+      const arrangedEvents = storedEvents.sort(
+        (a, b) => a.date_time - b.date_time
+      );
+      return arrangedEvents;
     }
     return [];
   });
@@ -30,7 +50,6 @@ export const ContextProvider = ({ children }) => {
     const difference = expireTime - currentTime;
 
     if (difference <= 0) {
-      console.log("Event expired");
       return { days: 0, hours: 0, minutes: 0, seconds: 0 };
     }
     return {
@@ -63,6 +82,12 @@ export const ContextProvider = ({ children }) => {
     setEvents,
     newEvent,
     setNewEvent,
+    darkMode,
+    setDarkMode,
+    showUpdateEvent,
+    setShowUpdateEvent,
+    UpdateEvent,
+    setUpdateEvent,
   };
   return <MyContext.Provider value={data}>{children}</MyContext.Provider>;
 };

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Calendar, Moon, Plus } from "lucide-react";
+import { MyContext } from "../context/MyContext";
 
 const Navigations = ({ setShowCreateEvent }) => {
+  const { darkMode, setDarkMode } = useContext(MyContext);
+
   return (
     <nav className="flex justify-between items-center">
       <div className=" flex items-start sm:items-center gap-1 text-custom-violet-500 cursor-pointer">
@@ -18,7 +21,14 @@ const Navigations = ({ setShowCreateEvent }) => {
           <Plus />
           <h1 className="hidden sm:block">Add Event</h1>
         </button>
-        <span className="p-2.5 duration-300 bg-white hover:bg-gray-100 cursor-pointer rounded-lg">
+        <span
+          onClick={() => setDarkMode((prev) => !prev)}
+          className={`p-2.5 duration-300 bg-white ${
+            darkMode
+              ? "dark:bg-gray-500 hover:bg-gray-400 dark:text-white"
+              : "hover:bg-gray-100"
+          }  cursor-pointer rounded-lg`}
+        >
           <Moon className="w-5" />
         </span>
       </div>
