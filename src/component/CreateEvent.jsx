@@ -122,7 +122,7 @@ const CreateEvent = () => {
           onChange={handleNewChange}
           required={true}
           name="date_time"
-          className={`px-4 bg-gray-100 border border-gray-300 py-1 mt-2 rounded-lg ${
+          className={`px-4 w-full bg-gray-100 border border-gray-300 py-1 mt-2 rounded-lg ${
             darkMode
               ? "dark:bg-[#374151] dark:border-gray-600 dark:outline-none"
               : ""

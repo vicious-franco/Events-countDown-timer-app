@@ -74,4 +74,4 @@ Toastify - sending notifications
 
 ## Live project link
 
-events-countdown-board-nsnit2p14-leons-projects-bf30300a.vercel.app
+https://events-countdown-board.vercel.app/
