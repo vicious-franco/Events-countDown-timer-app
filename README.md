@@ -22,14 +22,11 @@ _Dark mode view of the app._
 ![Countdown Screenshot](/public/mobile.png)
 _Overview of all active countdown events in mobile phone._
 
-![App Screenshot]()
-
 ## Installation
 
 Clone the repository:
 
-git clone https://github.com/yourusername/event-countdown-tracker.git
-cd event-countdown-tracker
+git clone https://github.com/vicious-franco/Events-countDown-timer-app.git
 
 Install dependencies:
 
@@ -39,13 +36,13 @@ npm install
 
 yarn install
 
-Start the development server:
-
-npm run dev
-
 # or
 
 yarn start
+
+### Start the development server:
+
+npm run dev
 
 ## Usage and features
 
