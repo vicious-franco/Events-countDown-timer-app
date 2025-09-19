@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* body {
-  background-color: #ebf2ff;
-} */
-
 @theme {
   --color-custom-violet-500: #4f46e5;
 }

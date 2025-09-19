@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { MyContext } from "../context/MyContext";
 import { eventTypes } from "../assets/data";
+import { toast } from "react-toastify";
 
 const CreateEvent = () => {
   const { setEvents, newEvent, setNewEvent, darkMode, setShowCreateEvent } =
@@ -22,12 +23,13 @@ const CreateEvent = () => {
             hours: 0,
             minutes: 0,
             seconds: 0,
+            notified: false,
           },
         },
       ];
       return addEvent.sort((a, b) => a.date_time - b.date_time);
     });
-
+    toast.success("New event added");
     e.target.reset();
   };
   const handleNewChange = (e) => {

@@ -20,6 +20,14 @@ const RenderEvent = ({ name, id, desc, counts, date_time, emoji }) => {
     });
   };
 
+  const timer = new Date(date_time);
+  let timeIndicator = "";
+  if (timer.getHours() < 12) {
+    timeIndicator = "AM";
+  } else {
+    timeIndicator = "PM";
+  }
+
   const handleEditingEvent = (filterId) => {
     const localStorageEvent = JSON.parse(localStorage.getItem("events_stored"));
     const MatchEvent = localStorageEvent.find((item) => item.id === filterId);
@@ -36,10 +44,12 @@ const RenderEvent = ({ name, id, desc, counts, date_time, emoji }) => {
 
   return (
     <section
-      className={`w-full  ${
+      className={`w-full shadow-md  ${
         days === 0 && hours < 24
-          ? `bg-orange-200 border-orange-400 ${
-              darkMode ? "dark:bg-red-950 dark:brightness-90 border-red-600" : ""
+          ? `bg-orange-200 border-red-300 ${
+              darkMode
+                ? "dark:bg-red-950 dark:brightness-90 border-red-600"
+                : ""
             } `
           : ` ${
               darkMode
@@ -94,8 +104,7 @@ const RenderEvent = ({ name, id, desc, counts, date_time, emoji }) => {
           <span className="flex items-center  gap-2 ">
             <Clock7 className="w-4" />
             <p>
-              {new Date(date_time).getHours()}:
-              {new Date(date_time).getMinutes()} AM
+              {timer.getHours()}:{timer.getMinutes()}:{timeIndicator}
             </p>
           </span>
         </div>
@@ -108,7 +117,7 @@ const RenderEvent = ({ name, id, desc, counts, date_time, emoji }) => {
             <h1
               className={`${
                 days === 0 && hours === 0 && minutes === 0 && seconds === 0
-                  ? "text-orange-400"
+                  ? `${darkMode ? "dark:text-red-700" : " text-orange-400"}`
                   : "text-custom-violet-500"
               } font-bold text-xl sm:text-3xl`}
             >
@@ -124,7 +133,7 @@ const RenderEvent = ({ name, id, desc, counts, date_time, emoji }) => {
             <h1
               className={`${
                 days === 0 && hours === 0 && minutes === 0 && seconds === 0
-                  ? "text-orange-400"
+                  ? `${darkMode ? "dark:text-red-700" : " text-orange-400"}`
                   : "text-custom-violet-500"
               } font-bold text-xl sm:text-3xl`}
             >
@@ -140,7 +149,7 @@ const RenderEvent = ({ name, id, desc, counts, date_time, emoji }) => {
             <h1
               className={`${
                 days === 0 && hours === 0 && minutes === 0 && seconds === 0
-                  ? "text-orange-400"
+                  ? `${darkMode ? "dark:text-red-700" : " text-orange-400"}`
                   : "text-custom-violet-500"
               } font-bold text-xl sm:text-3xl`}
             >
@@ -156,7 +165,7 @@ const RenderEvent = ({ name, id, desc, counts, date_time, emoji }) => {
             <h1
               className={`${
                 days === 0 && hours === 0 && minutes === 0 && seconds === 0
-                  ? "text-orange-400"
+                  ? `${darkMode ? "dark:text-red-700" : " text-orange-400"}`
                   : "text-custom-violet-500"
               } font-bold text-xl sm:text-3xl`}
             >

@@ -1,10 +1,18 @@
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const MyContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   // toogling themes
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const storedTheme = localStorage.getItem("darkMode");
+    return storedTheme ? JSON.parse(storedTheme) : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   // toogling the update component
   const [showUpdateEvent, setShowUpdateEvent] = useState(false);
@@ -33,6 +41,7 @@ export const ContextProvider = ({ children }) => {
     return [];
   });
 
+  // typing in form for handling on change for new event
   const [newEvent, setNewEvent] = useState({
     id: Date.now(),
     name: "",
@@ -40,6 +49,10 @@ export const ContextProvider = ({ children }) => {
     desc: "",
     date_time: new Date().getTime(),
   });
+
+  // an audio bell class for expired timer
+
+  const alarm = new Audio("/public/alarm.mp3");
 
   // state for toggling create event component
   const [showCreateEvent, setShowCreateEvent] = useState(false);
@@ -50,13 +63,19 @@ export const ContextProvider = ({ children }) => {
     const difference = expireTime - currentTime;
 
     if (difference <= 0) {
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      if (!e.counts?.notified) {
+        toast.warning("Event expired...");
+        alarm.play();
+        return { days: 0, hours: 0, minutes: 0, seconds: 0, notified: true };
+      }
+      return { days: 0, hours: 0, minutes: 0, seconds: 0, notified: true };
     }
     return {
       days: Math.floor(difference / (1000 * 60 * 60 * 24)),
       hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
       minutes: Math.floor((difference / (1000 * 60)) % 60),
       seconds: Math.floor((difference / 1000) % 60),
+      notified: e.counts?.notified || false,
     };
   };
 
@@ -64,7 +83,12 @@ export const ContextProvider = ({ children }) => {
     const interval = setInterval(() => {
       setEvents((prev) => {
         return prev.map((item) => {
-          return { ...item, counts: countDown(item) };
+          const newCounts = countDown(item);
+          // Only update notified status if it changed
+          if (newCounts.notified && (!item.counts || !item.counts.notified)) {
+            return { ...item, counts: newCounts };
+          }
+          return { ...item, counts: newCounts };
         });
       });
     }, 1000);
